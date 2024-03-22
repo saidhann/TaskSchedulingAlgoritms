@@ -131,7 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ex.h" />
-    <ClInclude Include="pq.h" />
     <ClInclude Include="task.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

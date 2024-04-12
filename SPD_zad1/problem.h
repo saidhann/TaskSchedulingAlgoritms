@@ -18,6 +18,11 @@ public:
     Rozwiazania SortPoQ();
     Rozwiazania PrzegladZupelny();
     Rozwiazania Schrange();
+    std::vector<int> convertToSolution(const Problem &myProblem) {
+        std::vector<int> temp;
+        for (auto iter : myProblem.VZadania) temp.push_back(iter.getNu());
+        return temp;
+    }
 };
 
 #endif

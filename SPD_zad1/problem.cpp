@@ -86,20 +86,51 @@ Rozwiazania Problem::PrzegladZupelny() {
             VBest = VZadaniaSorted;
             Cmax = newCmax;
         }
-	std::cout << "( ";
+	//std::cout << "( ";
 	for (const Zadania& zadanie : VZadaniaSorted) {
         
-        std::cout << zadanie.getNu() << ",";
+        //std::cout << zadanie.getNu() << ",";
     }
-	std::cout << ")" << newCmax <<std::endl;
+	//std::cout << ")" << newCmax <<std::endl;
 	
     } while (std::next_permutation(VZadaniaSorted.begin(), VZadaniaSorted.end()));
 
     std::vector<int> solution;
     for (const Zadania& zadanie : VBest) {
         solution.push_back(zadanie.getNu());
-        std::cout << zadanie.getNu() << std::endl;
+        //std::cout << zadanie.getNu() << std::endl;
     }
 
     return Rozwiazania(solution, Cmax);
+}
+
+Rozwiazania Problem::Schrange(){
+    int t = 0;
+    int cmax = Rozwiazania::CalculateCmax(VZadania);
+    Problem notCompleted(n,VZadania);
+    Problem ready(0,{});
+    Problem completed(0,{});
+
+    notCompleted.SortPoR();
+
+    while (notCompleted.VZadania.size() || ready.VZadania.size()) {
+        if (notCompleted.VZadania.size())
+            for (auto iter = notCompleted.VZadania.begin(); iter < notCompleted.VZadania.end();)
+                if ((*iter).getR() <= t) {
+                    ready.VZadania.push_back(*iter);
+                    iter = notCompleted.VZadania.erase(iter);
+                }
+                else iter++;
+        if (!ready.VZadania.size()) t = notCompleted.VZadania.front().getR();
+        ready.SortPoQ();
+        if (ready.VZadania.size()) {
+            completed.VZadania.push_back(ready.VZadania.back());
+            t = ready.VZadania.back().getR() + ready.VZadania.back().getP();
+            ready.VZadania.pop_back();
+        }
+    }
+
+    
+
+    return Rozwiazania(convertToSolution(completed), Rozwiazania::CalculateCmax(completed.VZadania));
 }

@@ -10,7 +10,7 @@ private:
     int nu;
   
 public:
-  Zadania(int _r, int _p, int _q, int _nu);
+  Zadania( int _p, int _q, int _nu);
   Zadania();
 
     int getR() const { return r; }

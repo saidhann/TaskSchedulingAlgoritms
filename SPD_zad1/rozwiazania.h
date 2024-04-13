@@ -11,6 +11,7 @@ private:
 
 public:
     Rozwiazania(const std::vector<int>& vec, int cmax);
+    Rozwiazania();
   //~Rozwiazania();
 
     const std::vector<int>& getSolution() const { return solution; }

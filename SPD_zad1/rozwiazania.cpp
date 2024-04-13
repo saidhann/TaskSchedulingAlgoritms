@@ -3,6 +3,8 @@
 
 Rozwiazania::Rozwiazania(const std::vector<int>& vec, int cmax) : solution(vec), Cmax(cmax) {
 }
+Rozwiazania::Rozwiazania() : solution(), Cmax() {
+}
 
 int Rozwiazania::CalculateCmax(const std::vector<Zadania>& VZadaniaSorted) {
     int currentTime = 0;

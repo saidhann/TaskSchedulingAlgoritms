@@ -1,5 +1,21 @@
 #include "problem.h"
 #include <iostream>
+#include <queue>
+
+
+struct CompareQ {
+    bool operator()(Zadania const& p1, Zadania const& p2)
+    {
+        return p1.getQ() < p2.getQ();
+    }
+};
+struct CompareR {
+    bool operator()(Zadania const& p1, Zadania const& p2)
+    {
+        return p1.getR() < p2.getR();
+    }
+};
+
 Problem::Problem(int _n, const std::vector<Zadania>& _VZadania)
     : n(_n), VZadania(_VZadania) {}
 
@@ -20,8 +36,8 @@ Rozwiazania Problem::SortPoR() {
     }
     int Cmax = Rozwiazania::CalculateCmax(VZadaniaSorted);
 
+    VZadania = VZadaniaSorted;
     return Rozwiazania(solution, Cmax);
-
 }
 
 
@@ -70,6 +86,7 @@ Rozwiazania Problem::SortPoQ() {
 
     
     int Cmax = Rozwiazania::CalculateCmax(VZadaniaSorted);
+    VZadania = VZadaniaSorted;
     return Rozwiazania(solution, Cmax);
 }
 
@@ -104,29 +121,60 @@ Rozwiazania Problem::PrzegladZupelny() {
     return Rozwiazania(solution, Cmax);
 }
 
+Rozwiazania Problem::MyAlgorithm() {
+    int t = 0;
+    int cmax = Rozwiazania::CalculateCmax(VZadania);
+    Problem notCompleted(n, VZadania);
+    std::priority_queue<Zadania, std::vector<Zadania>, CompareR> ready;
+    Problem completed(0, {});
+
+    notCompleted.SortPoR();
+
+    while (notCompleted.VZadania.size() || ready.size()) {
+        for (auto iter = notCompleted.VZadania.begin(); iter < notCompleted.VZadania.end() && notCompleted.VZadania.size();) {
+            if ((*iter).getR() <= t) {
+                ready.push(*iter);
+                iter = notCompleted.VZadania.erase(iter);
+            }
+            else iter++;
+        }
+        if (!ready.size()) t = notCompleted.VZadania.front().getR();
+
+        if (ready.size()) {
+            completed.VZadania.push_back(ready.top());
+            t = t + ready.top().getP();
+            ready.pop();
+        }
+    }
+
+
+
+    return Rozwiazania(convertToSolution(completed), Rozwiazania::CalculateCmax(completed.VZadania));
+}
+
 Rozwiazania Problem::Schrange(){
     int t = 0;
     int cmax = Rozwiazania::CalculateCmax(VZadania);
     Problem notCompleted(n,VZadania);
-    Problem ready(0,{});
+    std::priority_queue<Zadania,std::vector<Zadania>,CompareQ> ready ;
     Problem completed(0,{});
 
     notCompleted.SortPoR();
-
-    while (notCompleted.VZadania.size() || ready.VZadania.size()) {
-        if (notCompleted.VZadania.size())
-            for (auto iter = notCompleted.VZadania.begin(); iter < notCompleted.VZadania.end();)
+    
+    while (notCompleted.VZadania.size() || ready.size()) {
+        for (auto iter = notCompleted.VZadania.begin(); iter < notCompleted.VZadania.end() && notCompleted.VZadania.size();) {
                 if ((*iter).getR() <= t) {
-                    ready.VZadania.push_back(*iter);
+                    ready.push(*iter);
                     iter = notCompleted.VZadania.erase(iter);
                 }
                 else iter++;
-        if (!ready.VZadania.size()) t = notCompleted.VZadania.front().getR();
-        ready.SortPoQ();
-        if (ready.VZadania.size()) {
-            completed.VZadania.push_back(ready.VZadania.back());
-            t = ready.VZadania.back().getR() + ready.VZadania.back().getP();
-            ready.VZadania.pop_back();
+        }
+        if (!ready.size()) t = notCompleted.VZadania.front().getR();
+
+        if (ready.size()) {
+            completed.VZadania.push_back(ready.top());
+            t = t + ready.top().getP();
+            ready.pop();
         }
     }
 

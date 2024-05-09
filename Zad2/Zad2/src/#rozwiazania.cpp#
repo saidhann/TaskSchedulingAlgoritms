@@ -1,0 +1,17 @@
+#include "rozwiazania.h"
+
+Rozwiazania::CMAX(const std:vector<int>& vec){
+  int Obec_czas = 0;
+  int Cmax = 0;
+  Obec_czas = vec[0]
+  for(int i=1; i< vec.size(), ++i)
+    {
+      
+    }
+}
+
+Rozwiazania::Rozwiazania(const std::vector<int>& vec, int cmax) : solution(vec), Cmax(cmax) {
+}
+
+//Rozwiazania::~Rozwiazania() {
+//}

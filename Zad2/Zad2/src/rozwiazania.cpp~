@@ -1,0 +1,10 @@
+#include "rozwiazania.h"
+
+
+Rozwiazania::Rozwiazania(const std::vector<int>& vec, int cmax) : solution(vec), Cmax(cmax) {
+}
+
+int Rozwiazania::CalculateCmax(const std::vector<Zadania>& VZadaniaSorted) {
+  
+}
+
